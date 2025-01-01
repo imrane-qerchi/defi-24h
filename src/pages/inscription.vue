@@ -62,7 +62,7 @@ async function registerUser() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-primary flex flex-col items-center justify-center px-4 py-12">
+  <div class="mt-10 bg-primary flex flex-col items-center justify-center px-4 py-12">
     <!-- Titre principal -->
     <h1 class="text-3xl lg:text-5xl font-bold text-secondary mb-8">S’inscrire</h1>
     <p class="text-sm lg:text-lg font-light text-black text-center mb-12">
@@ -89,7 +89,7 @@ async function registerUser() {
       <input
         v-model="formData.email"
         type="email"
-        placeholder="Entre ton email (universitaire)"
+        placeholder="Entre ton email"
         class="w-full px-6 py-4 rounded-full bg-black text-[#7B7B83] placeholder-[#7B7B83] focus:outline-none focus:ring-2 focus:ring-secondary text-sm lg:text-lg font-light"
       />
       <input

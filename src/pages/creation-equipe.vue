@@ -46,7 +46,7 @@ async function createTeam() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-primary px-8 py-12 pl-16">
+  <div class="mt-10 bg-primary px-8 py-12 lg:pl-16">
     <!-- Titre principal -->
     <div class="mb-12">
       <h1
@@ -135,7 +135,7 @@ async function createTeam() {
       <div class="mt-12 text-center">
         <button
           @click="createTeam"
-          class="bg-blue-500 text-white px-6 py-3 rounded-full text-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          class="bg-secondary text-white px-6 py-3 rounded-full text-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
         >
           Créer mon équipe
         </button>

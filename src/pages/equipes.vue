@@ -1,6 +1,6 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { pb } from '@/backend'
 import CardDefi from '@/components/cardDefi.vue'
 
@@ -18,6 +18,7 @@ interface Team {
   }
 }
 
+const router = useRouter()
 const teams = ref<
   {
     teamName: string
@@ -25,6 +26,22 @@ const teams = ref<
     members: { name: string; avatar: string }[]
   }[]
 >([])
+
+// Vérifie si l'utilisateur est connecté
+const isLoggedIn = ref(false)
+
+const checkLoginStatus = () => {
+  isLoggedIn.value = !!pb.authStore.token // Vérifie si un token d'auth existe
+}
+
+// Fonction pour gérer la redirection au clic sur "Créer mon équipe"
+const handleCreateTeam = () => {
+  if (isLoggedIn.value) {
+    router.push('/creation-equipe') // Redirige vers la création d'équipe si connecté
+  } else {
+    router.push('/connexion') // Redirige vers la connexion si non connecté
+  }
+}
 
 // Fonction pour récupérer les données des équipes depuis PocketBase
 const fetchTeams = async () => {
@@ -47,11 +64,14 @@ const fetchTeams = async () => {
   }
 }
 
-onMounted(fetchTeams)
+onMounted(() => {
+  checkLoginStatus()
+  fetchTeams()
+})
 </script>
 
 <template>
-  <div class="min-h-screen bg-primary px-8 py-12 pl-16">
+  <div class="mt-10 bg-primary px-8 py-12 lg:pl-16">
     <!-- Titre principal -->
     <div class="mb-12">
       <h1
@@ -80,24 +100,30 @@ onMounted(fetchTeams)
 
       <!-- Boutons -->
       <div
-        class="flex flex-col lg:flex-row justify-center space-y-4 lg:space-y-0 lg:space-x-8 mb-12"
+        class="flex flex-col lg:flex-row justify-center space-y-4 lg:space-y-0 lg:space-x-32 my-12"
       >
         <button
           type="button"
-          class="bg-blue-600 text-white py-3 px-6 rounded-full text-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          @click="handleCreateTeam"
+          class="flex items-center justify-center bg-secondary text-white py-4 px-28 rounded-full text-2xl font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          style="white-space: nowrap"
         >
           Créer mon équipe
         </button>
         <button
           type="button"
-          class="bg-blue-600 text-white py-3 px-6 rounded-full text-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          class="flex items-center justify-center bg-secondary text-white py-4 px-28 rounded-full text-2xl font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          style="white-space: nowrap"
         >
           Intégrer une équipe
         </button>
       </div>
 
       <!-- Cards -->
-      <div v-if="teams.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        v-if="teams.length"
+        class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:mt-20"
+      >
         <CardDefi
           v-for="(team, index) in teams"
           :key="index"
@@ -110,13 +136,3 @@ onMounted(fetchTeams)
     </div>
   </div>
 </template>
-
-<style scoped>
-/* Styles pour la photo de profil (empêche la déformation) */
-img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-}
-</style>

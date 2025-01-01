@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-primary px-4 py-6 md:px-8 md:py-12 lg:px-16">
+  <div class="mt-10 bg-primary px-4 py-6 md:px-8 md:py-12 lg:px-16">
     <!-- Titre principal -->
     <h1 class="text-4xl md:text-5xl lg:text-7xl font-extrabold text-black mb-8">
       Politique de Confidentialité

@@ -1,14 +1,15 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import CountdownTimer from '@/components/CountdownTimer.vue'
 </script>
 
 <template>
   <!-- En-tête de la page -->
-  <div class="flex-1 lg:pl-20 flex flex-col items-start pb-10 mt-20">
+  <div class="flex-1 lg:pl-20 flex flex-col items-start pb-10 px-6 lg:mt-20">
     <div class="mt-12 mb-10 lg:mb-8 order-1 lg:order-2">
-      <h1 class="text-3xl lg:text-5xl font-bold text-secondary">We are</h1>
-      <h2 class="text-4xl lg:text-6xl font-bold text-secondary">Coming Soon.</h2>
-      <p class="text-xl lg:text-2xl font-bold mt-4">17 Janvier 2025</p>
+      <h1 class="text-4xl lg:text-7xl font-bold text-secondary">Le Défi 24h</h1>
+      <h2 class="text-4xl lg:text-7xl font-bold text-secondary">C'est bientôt !</h2>
+      <p class="text-2xl lg:text-3xl font-bold mt-4">17 Janvier 2025</p>
     </div>
     <CountdownTimer class="order-2 lg:order-1 mb-10 lg:mb-0 w-full max-w-screen-lg mx-auto" />
   </div>
@@ -17,21 +18,23 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
   <div class="relative">
     <!-- Bandeau arrière-plan (blanc, défilant, avec rotation légère) -->
     <div
-      class="absolute top-0 left-0 w-full bg-white text-secondary text-center py-6 font-bold text-lg lg:text-6xl transform rotate-3"
+      class="absolute top-0 left-0 w-full bg-white text-secondary text-center py-3 lg:py-5 font-bold text-xl lg:text-3xl transform rotate-3"
     >
       <div class="overflow-hidden whitespace-nowrap">
         <p class="animate-marquee-10s">
-          Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie ?
+          Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie
+          ? ✨ Prêt Pour La Folie ?
         </p>
       </div>
     </div>
     <!-- Bandeau de présentation avant-plan (décalé et défilant) -->
     <div
-      class="bg-secondary text-white text-center py-6 font-bold text-lg lg:text-6xl transform -rotate-3 mt-10"
+      class="bg-secondary text-white text-center py-3 lg:py-5 font-bold text-xl lg:text-3xl transform -rotate-3 mt-10"
     >
       <div class="overflow-hidden whitespace-nowrap">
         <p class="animate-marquee-10s">
-          Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie ?
+          Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie
+          ? ✨ Prêt Pour La Folie ?
         </p>
       </div>
     </div>
@@ -42,7 +45,7 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <div>
         <h2
-          class="text-4xl lg:text-6xl font-bold text-transparent"
+          class="text-5xl lg:text-8xl font-bold text-transparent"
           style="-webkit-text-stroke: 1px #0029ff"
         >
           24 HEURES
@@ -50,7 +53,7 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
         <h3 class="text-2xl lg:text-3xl font-bold text-secondary mt-2">
           Pour Créer, Rire… Et Ne Pas Dormir !
         </h3>
-        <p class="text-sm lg:text-lg mt-6">
+        <p class="text-sm lg:text-2xl mt-6">
           Le Défi 24H, c’est l’événement incontournable du cursus MMI : 24 heures non-stop pour
           créer, imaginer et repousser vos limites sur un thème surprise. Que vous soyez fan de
           design, de montage, de développement ou juste là pour l’ambiance (et les pizzas), tout le
@@ -58,42 +61,47 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
         </p>
       </div>
       <div class="text-center">
-        <p class="text-sm lg:text-lg font-bold text-black mb-6">
-          Prêt à relever le challenge ?<br />Inscris-toi dès maintenant !
+        <p class="text-xl lg:text-2xl font-extrabold text-black mb-5">
+          Prêt à relever le challenge ?
+        </p>
+        <p class="text-xl lg:text-2xl font-extrabold text-black mb-10">
+          Inscris-toi dès maintenant !
         </p>
         <router-link
           to="/inscription"
-          class="bg-secondary text-white px-6 py-3 rounded-full text-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary"
+          class="bg-secondary text-white px-28 py-4 rounded-full text-xl lg:text-2xl font-normal hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary"
         >
           Inscription
         </router-link>
       </div>
     </div>
 
-    <div class="mt-24 text-center">
-      <h3 class="text-xl lg:text-3xl font-bold text-secondary mb-6">Un Pour Tous</h3>
+    <div class="mt-24 lg:text-center">
+      <h3 class="text-2xl lg:text-4xl font-bold text-secondary mb-6">Un Pour Tous</h3>
       <h2
-        class="text-4xl lg:text-8xl font-bold text-transparent"
+        class="text-5xl lg:text-9xl font-bold text-transparent"
         style="-webkit-text-stroke: 1px #0029ff"
       >
         TOUS POUR<br />L’ÉQUIPE !
       </h2>
-      <p class="text-sm lg:text-lg mt-6 text-left">
+      <p class="text-sm lg:text-2xl mt-6 text-left">
         Au Défi 24H, on joue en équipe ! Regroupe 4 ou 5 génies créatifs (ou juste tes potes, ça
         marche aussi), et prépare-toi à vivre une aventure intense. Chacun apporte ses talents, que
         ce soit pour le design, le montage ou simplement pour encourager. Une seule règle : pas plus
         de 5, sinon c’est la révolution !
       </p>
-      <div class="flex justify-center space-x-4 mt-8">
+      <div
+        class="flex flex-col lg:flex-row lg:justify-center lg:space-x-36 mt-8 space-y-4 lg:space-y-0"
+      >
         <router-link
           to="/creer-equipe"
-          class="bg-secondary text-white px-6 py-3 rounded-full text-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          class="bg-secondary text-white px-28 py-4 rounded-full text-xl lg:text-2xl font-normal hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 whitespace-nowrap text-center"
         >
           Créer mon équipe
         </router-link>
         <router-link
           to="/integrer-equipe"
-          class="bg-secondary text-white px-6 py-3 rounded-full text-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          class="bg-secondary text-white px-28 py-4 rounded-full text-xl lg:text-2xl font-normal hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 whitespace-nowrap text-center"
         >
           Intégrer une équipe
         </router-link>
@@ -102,7 +110,7 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
 
     <!-- Partenaires -->
     <div class="mt-24 text-center">
-      <h3 class="text-xl lg:text-3xl font-bold text-secondary mb-6">NOS PARTENAIRES</h3>
+      <h3 class="text-xl lg:text-5xl font-bold text-secondary mb-6">NOS PARTENAIRES</h3>
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 items-center">
         <img src="#" alt="Maison des Étudiants de Montbéliard" class="mx-auto h-16" />
         <img src="#" alt="CROUS" class="mx-auto h-16" />
@@ -117,16 +125,16 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
         Une Question ? Besoin D’Infos ?
       </h3>
       <h2
-        class="text-4xl lg:text-8xl font-bold text-transparent mb-4"
+        class="text-5xl lg:text-[104px] font-bold text-transparent mb-4"
         style="-webkit-text-stroke: 2px #0029ff"
       >
         CONTACTEZ NOUS
       </h2>
 
-      <div class="flex items-center justify-center space-x-4 mb-6">
+      <div class="flex flex-wrap items-center justify-center space-x-0 lg:space-x-4 mb-6">
         <router-link
           to="/contact"
-          class="bg-secondary text-white px-6 py-3 rounded-full text-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          class="bg-secondary text-white px-28 py-4 rounded-full text-xl lg:text-2xl font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 text-center w-full sm:w-auto"
         >
           Envoyer un message
         </router-link>
@@ -138,7 +146,7 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
 <style scoped>
 @keyframes marquee {
   0% {
-    transform: translateX(75%);
+    transform: translateX(0%);
   }
   100% {
     transform: translateX(-100%);
@@ -147,7 +155,7 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
 
 @keyframes marquee-10s {
   0% {
-    transform: translateX(75%);
+    transform: translateX(0%);
   }
   100% {
     transform: translateX(-100%);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, watch } from 'vue'
 import { pb } from '@/backend'
 import { useRouter } from 'vue-router/auto'
 
@@ -9,23 +9,37 @@ const isMenuOpen = ref(false)
 // Fonction pour basculer l'état du menu
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
+  document.body.style.overflow = isMenuOpen.value ? 'hidden' : ''
 }
 
 // Fonction pour fermer le menu
 const closeMenu = () => {
   isMenuOpen.value = false
+  document.body.style.overflow = ''
 }
 
 // Vérification de l'état de connexion de l'utilisateur
-const isLoggedIn = computed(() => !!pb.authStore.model)
+const isLoggedIn = ref(!!pb.authStore.model)
+const user = ref(pb.authStore.model) // Conserve l'utilisateur connecté
 
 const router = useRouter()
 
 // Fonction pour gérer la déconnexion
 const logout = () => {
   pb.authStore.clear()
+  isLoggedIn.value = false // Met à jour l'état
+  user.value = null
   router.push('/') // Redirection vers la page d'accueil après déconnexion
 }
+
+// Mettre à jour `isLoggedIn` automatiquement lors de changements
+watch(
+  () => pb.authStore.model,
+  (newValue) => {
+    isLoggedIn.value = !!newValue
+    user.value = newValue
+  }
+)
 </script>
 
 <template>
@@ -33,7 +47,7 @@ const logout = () => {
 
   <!-- Header -->
   <header
-    class="relative mx-auto flex items-center justify-between bg-black text-white px-6 py-4 rounded-full lg:space-x-4 lg:py-6 lg:px-10 max-w-[90%]"
+    class="sticky top-0 z-50 mx-auto flex items-center justify-between bg-[#1C1C1C] text-white px-6 py-4 rounded-full lg:space-x-4 lg:py-6 lg:px-10 max-w-[90%]"
   >
     <!-- Logo avec espace ajouté à droite -->
     <div class="mr-8">
@@ -43,26 +57,26 @@ const logout = () => {
     </div>
 
     <!-- Navigation pour Desktop -->
-    <nav class="items-center space-x-6 hidden lg:flex">
-      <router-link to="/equipes" class="text-lg font-medium hover:text-secondary transition">
+    <nav class="items-center space-x-10 hidden lg:flex">
+      <router-link to="/equipes" class="text-2xl font-medium hover:text-secondary transition">
         Équipes
       </router-link>
-      <router-link to="/classement" class="text-lg font-medium hover:text-secondary transition">
+      <router-link to="/classement" class="text-2xl font-medium hover:text-secondary transition">
         Classement
       </router-link>
-      <router-link to="/programme" class="text-lg font-medium hover:text-secondary transition">
+      <router-link to="/programme" class="text-2xl font-medium hover:text-secondary transition">
         Programme
       </router-link>
-      <router-link to="/creations" class="text-lg font-medium hover:text-secondary transition">
+      <router-link to="/creations" class="text-2xl font-medium hover:text-secondary transition">
         Créations
       </router-link>
-      <router-link to="/galerie" class="text-lg font-medium hover:text-secondary transition">
+      <router-link to="/galerie" class="text-2xl font-medium hover:text-secondary transition">
         Galerie
       </router-link>
     </nav>
 
     <!-- Boutons pour Desktop -->
-    <div class="items-center space-x-2 hidden lg:flex">
+    <div class="pl-10 items-center space-x-3 hidden lg:flex">
       <router-link
         v-if="!isLoggedIn"
         to="/inscription"
@@ -80,22 +94,23 @@ const logout = () => {
       <router-link
         v-if="!isLoggedIn"
         to="/connexion"
-        class="bg-secondary text-white px-4 py-2 rounded-full hover:opacity-90 transition"
+        class="bg-secondary text-white text-lg font-normal px-4 py-2 rounded-full hover:opacity-90 transition"
       >
         Connexion
       </router-link>
       <router-link
         v-else
         to="/mon-compte"
-        class="bg-secondary text-white px-4 py-2 rounded-full hover:opacity-90 transition"
+        class="bg-secondary text-white font-normal px-4 py-2 rounded-full hover:opacity-90 transition"
       >
         Mon compte
       </router-link>
     </div>
 
     <!-- Icône du menu mobile avec espace ajouté à gauche -->
-    <div class="cursor-pointer lg:hidden ml-4" @click="toggleMenu">
+    <div class="cursor-pointer lg:hidden ml-36" @click="toggleMenu">
       <svg
+        aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
@@ -115,12 +130,15 @@ const logout = () => {
   <!-- Menu latéral mobile -->
   <div
     v-if="isMenuOpen"
-    class="fixed right-0 top-0 z-40 h-screen w-2/3 bg-black text-white transition-transform transform ease-in-out duration-300"
+    class="fixed right-0 top-0 z-40 h-screen w-2/3 bg-[#1C1C1C] text-white transition-transform transform ease-in-out duration-300"
+    role="dialog"
+    aria-labelledby="mobile-menu"
   >
     <div class="flex justify-end p-4">
       <!-- Icône de fermeture -->
       <div class="cursor-pointer" @click="closeMenu">
         <svg
+          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -136,7 +154,7 @@ const logout = () => {
         </svg>
       </div>
     </div>
-    <nav class="p-6">
+    <nav id="mobile-menu" class="p-6">
       <ul class="flex flex-col space-y-6">
         <li>
           <router-link

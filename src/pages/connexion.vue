@@ -35,7 +35,7 @@ async function loginUser() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-primary flex flex-col items-center justify-center px-4 py-12">
+  <div class="mt-10 bg-primary flex flex-col items-center justify-center px-4 py-12">
     <!-- Titre principal -->
     <h1 class="text-3xl lg:text-5xl font-bold text-secondary mb-8">Se connecter</h1>
     <p class="text-sm lg:text-lg font-light text-black text-center mb-12">

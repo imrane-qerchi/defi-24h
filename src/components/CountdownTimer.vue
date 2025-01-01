@@ -31,7 +31,7 @@ updateCountdown()
 setInterval(updateCountdown, 1000)
 
 const countdownUnits = [
-  { label: 'j', value: days },
+  { label: 'J', value: days },
   { label: 'h', value: hours },
   { label: 'm', value: minutes },
   { label: 's', value: seconds }
@@ -40,12 +40,16 @@ const countdownUnits = [
 
 <template>
   <div
-    class="flex flex-col lg:flex-row justify-center items-center space-y-4 lg:space-y-0 lg:space-x-4 font-poppins text-transparent opacity-90"
+    class="flex flex-col lg:flex-row justify-center items-center lg:space-y-0 lg:space-x-4 font-poppins text-transparent opacity-90"
     style="-webkit-text-stroke: 3px #0029ff"
   >
-    <div v-for="(unit, index) in countdownUnits" :key="index" class="flex items-baseline">
-      <p class="text-6xl sm:text-8xl md:text-9xl lg:text-[200px] font-bold">{{ unit.value }}</p>
-      <span class="ml-2 text-4xl sm:text-5xl lg:text-6xl font-medium">{{ unit.label }}</span>
+    <div v-for="(unit, index) in countdownUnits" :key="index" class="flex items-baseline space-x-2">
+      <p class="text-[180px] md:text-8xl lg:text-[240px] font-bold leading-none">
+        {{ unit.value }}
+      </p>
+      <span class="text-6xl lg:text-5xl font-medium leading-tight">
+        {{ unit.label }}
+      </span>
     </div>
   </div>
 </template>

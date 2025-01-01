@@ -81,9 +81,9 @@ onMounted(fetchUser)
 </script>
 
 <template>
-  <div class="min-h-screen bg-primary px-8 py-12">
+  <div class="mt-10 bg-primary px-8 py-12">
     <!-- Titre principal -->
-    <div class="mb-12 pl-16">
+    <div class="mb-12 lg:pl-16">
       <h1
         class="text-4xl lg:text-8xl font-bold text-transparent mb-6"
         style="-webkit-text-stroke: 1px #0029ff"
@@ -94,7 +94,7 @@ onMounted(fetchUser)
     </div>
 
     <div
-      class="flex flex-col lg:flex-row items-center mb-12 space-y-6 lg:space-y-0 lg:space-x-8 pl-24"
+      class="flex flex-col lg:flex-row items-center mb-12 space-y-6 lg:space-y-0 lg:space-x-8 lg:pl-24"
     >
       <!-- Photo de profil -->
       <div class="relative w-32 h-32 rounded-full overflow-hidden">
@@ -104,13 +104,8 @@ onMounted(fetchUser)
           :filename="user.avatar"
           width="128"
           height="128"
+          class="w-full h-full object-cover"
         />
-        <button
-          class="absolute bottom-[-10px] right-[-10px] bg-transparent text-secondary border border-secondary rounded-full p-2"
-          @click="() => console.log('Feature à implémenter')"
-        >
-          ✎
-        </button>
       </div>
 
       <!-- Nom et Email -->
@@ -120,7 +115,7 @@ onMounted(fetchUser)
       </div>
     </div>
 
-    <div class="mb-12 pl-24">
+    <div class="mb-12 lg:pl-24">
       <h3 class="text-xl font-bold text-secondary mb-6">Informations</h3>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-6">
         <div>
@@ -235,7 +230,7 @@ onMounted(fetchUser)
     <div class="flex justify-center space-x-4 pl-24">
       <button
         v-if="!user?.equipe"
-        class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        class="bg-secondary text-white px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
         @click="goToCreateTeam"
       >
         Créer mon équipe
@@ -243,7 +238,7 @@ onMounted(fetchUser)
 
       <button
         v-if="user?.equipe && user?.equipe.chef === user.id"
-        class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        class="bg-secondary text-white px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
         @click="goToEditTeam"
       >
         Modifier mon équipe

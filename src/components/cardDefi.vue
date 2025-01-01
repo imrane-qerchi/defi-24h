@@ -17,22 +17,26 @@ defineProps({
 
 <template>
   <div
-    class="card-defi flex flex-col items-center bg-blue-500 text-white rounded-3xl p-6 shadow-lg w-80"
+    class="card-defi flex flex-col items-center bg-secondary text-white rounded-3xl p-6 shadow-lg w-80"
   >
     <!-- Image principale -->
-    <img :src="imageSrc" alt="Team image" class="rounded-xl mb-4 w-full h-40 object-cover" />
+    <div class="w-full h-40 overflow-hidden rounded-xl mb-4">
+      <img :src="imageSrc" alt="Team image" class="w-full h-full object-cover" />
+    </div>
 
     <!-- Nom de l'équipe -->
     <h2 class="text-2xl text-primary font-bold mb-4">{{ teamName }}</h2>
 
     <!-- Liste des membres -->
-    <ul class="space-y-2">
+    <ul class="space-y-2 w-full">
       <li
         v-for="(member, index) in members"
         :key="index"
         class="flex items-center space-x-3 text-lg"
       >
-        <img :src="member.avatar" alt="Avatar" class="w-10 h-10 rounded-full border border-white" />
+        <div class="w-12 h-12 overflow-hidden rounded-full border border-white">
+          <img :src="member.avatar" alt="Avatar" class="w-full h-full object-cover" />
+        </div>
         <span>{{ member.name }}</span>
       </li>
     </ul>

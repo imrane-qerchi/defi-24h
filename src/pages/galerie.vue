@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <div class="min-h-screen bg-primary px-8 py-12 pl-16">
+  <div class="mt-10 bg-primary px-8 py-12 lg:pl-16">
     <!-- Titre principal -->
     <div class="mb-12">
       <h1
