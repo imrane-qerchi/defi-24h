@@ -1,7 +1,9 @@
-<template> 
+<template>
   <div class="min-h-screen bg-primary px-4 py-6 md:px-8 md:py-12 lg:px-16">
     <!-- Titre principal -->
-    <h1 class="text-4xl md:text-5xl lg:text-7xl font-extrabold text-black mb-8">Mentions légales</h1>
+    <h1 class="text-4xl md:text-5xl lg:text-7xl font-extrabold text-black mb-8">
+      Mentions légales
+    </h1>
 
     <!-- Ligne de séparation (br noir) -->
     <hr class="border-t-2 border-black mb-8" />
@@ -89,7 +91,9 @@
 
       <!-- Section 7 -->
       <section>
-        <h2 class="text-2xl md:text-3xl font-normal text-black mb-4">7. Propriété intellectuelle</h2>
+        <h2 class="text-2xl md:text-3xl font-normal text-black mb-4">
+          7. Propriété intellectuelle
+        </h2>
         <p class="text-black text-base">
           Tous les contenus présents sur le site (textes, images, vidéos, logos, etc.) sont la
           propriété du Département MMi de l’IUT Nord Franche-Comté, sauf mention contraire. Toute
@@ -99,7 +103,9 @@
 
       <!-- Section 8 -->
       <section>
-        <h2 class="text-2xl md:text-3xl font-normal text-black mb-4">8. Limitation de responsabilité</h2>
+        <h2 class="text-2xl md:text-3xl font-normal text-black mb-4">
+          8. Limitation de responsabilité
+        </h2>
         <p class="text-black text-base">
           Le Département MMi de l’IUT Nord Franche-Comté ne saurait être tenu responsable des
           dommages directs ou indirects résultant de l’utilisation du site ou des informations qui y

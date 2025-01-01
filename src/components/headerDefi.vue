@@ -28,11 +28,13 @@ const logout = () => {
 }
 </script>
 
-<template> 
+<template>
   <div class="h-8 bg-primary"></div>
 
   <!-- Header -->
-  <header class="relative mx-auto flex items-center justify-between bg-black text-white px-6 py-4 rounded-full lg:space-x-4 lg:py-6 lg:px-10 max-w-[90%]">
+  <header
+    class="relative mx-auto flex items-center justify-between bg-black text-white px-6 py-4 rounded-full lg:space-x-4 lg:py-6 lg:px-10 max-w-[90%]"
+  >
     <!-- Logo avec espace ajouté à droite -->
     <div class="mr-8">
       <router-link to="/">
@@ -41,7 +43,7 @@ const logout = () => {
     </div>
 
     <!-- Navigation pour Desktop -->
-    <nav class=" items-center space-x-6 hidden lg:flex">
+    <nav class="items-center space-x-6 hidden lg:flex">
       <router-link to="/equipes" class="text-lg font-medium hover:text-secondary transition">
         Équipes
       </router-link>
@@ -60,7 +62,7 @@ const logout = () => {
     </nav>
 
     <!-- Boutons pour Desktop -->
-    <div class=" items-center space-x-2 hidden lg:flex">
+    <div class="items-center space-x-2 hidden lg:flex">
       <router-link
         v-if="!isLoggedIn"
         to="/inscription"

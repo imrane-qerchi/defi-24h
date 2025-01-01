@@ -9,7 +9,7 @@ const teams = ref([])
 const fetchTeams = async () => {
   try {
     const response = await pb.collection('teams').getFullList({
-      expand: 'chef,membres', // Récupère les relations des chefs et membres
+      expand: 'chef,membres' // Récupère les relations des chefs et membres
     })
 
     // Formate les données pour les adapter au composant CardDefi
@@ -18,10 +18,8 @@ const fetchTeams = async () => {
       imageSrc: team.photo ? pb.files.getUrl(team, team.photo) : null,
       members: team.expand.membres.map((member: any) => ({
         name: `${member.prenom} ${member.nom}`,
-        avatar: member.avatar
-          ? pb.files.getUrl(member, member.avatar)
-          : null,
-      })),
+        avatar: member.avatar ? pb.files.getUrl(member, member.avatar) : null
+      }))
     }))
   } catch (error) {
     console.error('Erreur lors de la récupération des équipes:', error)
@@ -60,7 +58,9 @@ onMounted(fetchTeams)
       </p>
 
       <!-- Boutons -->
-      <div class="flex flex-col lg:flex-row justify-center space-y-4 lg:space-y-0 lg:space-x-8 mb-12">
+      <div
+        class="flex flex-col lg:flex-row justify-center space-y-4 lg:space-y-0 lg:space-x-8 mb-12"
+      >
         <button
           type="button"
           class="bg-blue-600 text-white py-3 px-6 rounded-full text-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-600"
