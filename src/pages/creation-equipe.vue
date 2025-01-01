@@ -2,13 +2,14 @@
 // Importation de PocketBase et Vue
 import { ref } from 'vue'
 import { pb } from '@/backend'
-import { useRouter } from 'vue-router/auto'
+import { useRouter } from 'vue-router'
 
 // Champs réactifs pour le formulaire
 const teamName = ref('')
 const teamPhoto = ref<File | null>(null)
 const successMessage = ref(false)
 const errorMessage = ref('')
+const photoInput = ref<HTMLInputElement | null>(null)
 const router = useRouter()
 
 // Fonction pour gérer le dépôt de fichier
@@ -111,7 +112,7 @@ async function createTeam() {
           </label>
           <div
             class="w-full bg-white px-4 py-12 border-2 border-dashed rounded-lg text-center"
-            @click="$refs.photoInput.click()"
+            @click="photoInput?.click()"
           >
             <p v-if="!teamPhoto">
               Déposez ici pour joindre ou <span class="text-blue-500">télécharger</span>

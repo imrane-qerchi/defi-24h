@@ -21,9 +21,15 @@ const router = useRouter()
 const fetchUser = async () => {
   try {
     const authModel = pb.authStore.model as UsersResponse
-    user.value = await pb.collection('users').getOne(authModel.id, {
-      expand: 'equipe.chef' // Expand pour récupérer les détails de l'équipe et du chef
-    })
+    const userData = await pb.collection('users').getOne(authModel.id)
+
+    // Charger les détails de l'équipe séparément
+    if (userData.equipe) {
+      const teamData = await pb.collection('teams').getOne(userData.equipe)
+      user.value = { ...userData, expand: { equipe: teamData } }
+    } else {
+      user.value = userData
+    }
   } catch (error) {
     console.error('Erreur lors de la récupération des informations utilisateur:', error)
   }
@@ -54,7 +60,7 @@ const goToCreateTeam = () => {
 // Redirection vers la page de modification d'équipe
 const goToEditTeam = () => {
   if (user.value?.expand?.equipe) {
-    router.push(`/edit-equipe/${user.value.expand.equipe.id}`)
+    router.push(`/edit-equipe/${user.value.equipe.id}`)
   }
 }
 

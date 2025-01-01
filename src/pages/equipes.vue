@@ -1,24 +1,45 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { pb } from '@/backend'
 import CardDefi from '@/components/cardDefi.vue'
 
-const teams = ref([])
+interface Member {
+  prenom: string
+  nom: string
+  avatar?: string | null // Peut être une chaîne ou null
+}
 
-// Fonction pour récupérer les données des équipes depuis Pocketbase
+interface Team {
+  nom: string
+  photo?: string | null // Peut être une chaîne ou null
+  expand?: {
+    membres: Member[] // Liste des membres
+  }
+}
+
+const teams = ref<
+  {
+    teamName: string
+    imageSrc: string
+    members: { name: string; avatar: string }[]
+  }[]
+>([])
+
+// Fonction pour récupérer les données des équipes depuis PocketBase
 const fetchTeams = async () => {
   try {
-    const response = await pb.collection('teams').getFullList({
-      expand: 'chef,membres' // Récupère les relations des chefs et membres
+    const response: Team[] = await pb.collection('teams').getFullList({
+      expand: 'membres' // Récupère les relations des membres
     })
 
     // Formate les données pour les adapter au composant CardDefi
     teams.value = response.map((team) => ({
       teamName: team.nom,
-      imageSrc: team.photo ? pb.files.getUrl(team, team.photo) : null,
-      members: team.expand.membres.map((member: any) => ({
+      imageSrc: team.photo ? pb.files.getUrl(team, team.photo) : '', // Fournit une chaîne vide si null
+      members: (team.expand?.membres || []).map((member) => ({
         name: `${member.prenom} ${member.nom}`,
-        avatar: member.avatar ? pb.files.getUrl(member, member.avatar) : null
+        avatar: member.avatar ? pb.files.getUrl(member, member.avatar) : '' // Fournit une chaîne vide si null
       }))
     }))
   } catch (error) {
