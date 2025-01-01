@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router/auto'
-import LogInOut from './components/LogInOut.vue';
+import { RouterView } from 'vue-router/auto'
+import HeaderDefi from './components/headerDefi.vue'
+import FooterDefi from './components/footerDefi.vue'
 </script>
 
 <template>
-  <h1 class="text-2xl">Template principale (Menu/Footer...)</h1>
-  <LogInOut/>
-  <nav>
-    <ul>
-      <RouterLink to="/">Accueil</RouterLink>
-      <RouterLink to="/about">À propos</RouterLink>
-    </ul>
-  </nav>
-  
-  <main>
-    <RouterView v-slot="{ Component }">
-      <Suspense>
-        <component :is="Component" :key="$route.path"/>
-      </Suspense>
-    </RouterView>
-  </main>
+  <div class="flex flex-col min-h-screen bg-primary font-poppins text-black">
+    <!-- Header -->
+    <HeaderDefi />
+
+    <!-- Contenu principal -->
+    <main class="flex-1">
+      <RouterView v-slot="{ Component }">
+        <Suspense>
+          <component :is="Component" :key="$route.path" />
+        </Suspense>
+      </RouterView>
+    </main>
+
+    <!-- Footer -->
+    <FooterDefi />
+  </div>
 </template>
