@@ -318,7 +318,9 @@ onMounted(() => {
     </div>
 
     <!-- Boutons dynamiques -->
-    <div class="flex justify-center space-x-4 pl-24">
+    <div
+      class="flex flex-col lg:flex-row justify-center space-y-4 lg:space-y-0 lg:space-x-4 pl-24 whitespace-nowrap"
+    >
       <button
         v-if="!user?.expand?.equipe"
         class="bg-secondary text-white px-6 py-3 rounded-lg hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-transform duration-200"
