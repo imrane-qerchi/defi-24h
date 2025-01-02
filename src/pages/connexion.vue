@@ -27,7 +27,7 @@ async function loginUser() {
     await pb.collection('users').authWithPassword(formData.value.email, formData.value.password)
 
     // Redirection après succès
-    router.push('/dashboard') // Remplace "/dashboard" par la route souhaitée après connexion
+    router.push('/')
   } catch (error: any) {
     errorMessage.value = error.message || 'Une erreur est survenue.'
   }
@@ -99,25 +99,25 @@ async function loginUser() {
 
       <!-- Lien mot de passe oublié -->
       <div class="text-center">
-        <a href="#" class="text-sm lg:text-lg text-secondary hover:underline"
-          >Mot de passe oublié ?</a
-        >
+        <router-link to="/contact" class="text-sm lg:text-lg text-secondary hover:underline">
+          Mot de passe oublié ?
+        </router-link>
       </div>
 
       <!-- Boutons -->
       <div class="flex flex-col items-center space-y-4 w-full max-w-4xl">
         <button
           type="submit"
-          class="w-full max-w-lg py-3 px-6 text-white bg-secondary rounded-full text-lg font-normal hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary"
+          class="w-full max-w-lg py-3 px-6 text-white bg-secondary rounded-full text-lg font-normal hover:opacity-90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary transition-transform duration-200"
         >
           Se connecter
         </button>
-        <button
-          type="button"
-          class="w-full max-w-lg py-3 px-6 text-white bg-[#262626] rounded-full text-lg font-normal border-2 border-[#333333] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-gray-800"
+        <router-link
+          to="/inscription"
+          class="w-full max-w-lg py-3 px-6 text-white bg-[#262626] rounded-full text-lg font-normal border-2 border-[#333333] hover:opacity-90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-800 transition-transform duration-200 text-center"
         >
           Inscription
-        </button>
+        </router-link>
       </div>
     </form>
 

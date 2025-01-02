@@ -28,12 +28,23 @@ async function createTeam() {
   }
 
   try {
+    // Récupération de l'utilisateur courant
+    const currentUser = pb.authStore.model
+    if (!currentUser) {
+      throw new Error('Utilisateur non authentifié.')
+    }
+
     // Création de l'équipe dans PocketBase
     const formData = new FormData()
     formData.append('nom', teamName.value)
     formData.append('photo', teamPhoto.value)
+    formData.append('chef', currentUser.id) // L'utilisateur devient chef
+    formData.append('membres', JSON.stringify([currentUser.id])) // L'utilisateur devient membre
 
-    await pb.collection('teams').create(formData)
+    const team = await pb.collection('teams').create(formData)
+
+    // Mise à jour de l'utilisateur pour associer l'équipe créée
+    await pb.collection('users').update(currentUser.id, { equipe: team.id })
 
     successMessage.value = true
     setTimeout(() => {
@@ -131,11 +142,11 @@ async function createTeam() {
         </div>
       </div>
 
-      <!-- Bouton de création -->
+      <!-- Bouton de création avec effet de hover -->
       <div class="mt-12 text-center">
         <button
           @click="createTeam"
-          class="bg-secondary text-white px-6 py-3 rounded-full text-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          class="bg-secondary text-white px-6 py-3 rounded-full text-lg font-medium hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-transform duration-200"
         >
           Créer mon équipe
         </button>

@@ -1,19 +1,22 @@
-import { ref, watch } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { pb } from '@/backend' // PocketBase instance
 import { useRouter } from 'vue-router'
 
-export const isLoggedIn = ref(!!pb.authStore.model) // Réactif pour l'état de connexion
-export const user = ref(pb.authStore.model) // Réactif pour l'utilisateur connecté
+// État réactif pour l'authentification
+export const authState = reactive({
+  isLoggedIn: !!pb.authStore.model,
+  user: pb.authStore.model || null
+})
 
 const router = useRouter()
 
-// Mise à jour de l'état d'authentification
+// Fonction pour actualiser l'état d'authentification
 const refreshAuthState = () => {
-  isLoggedIn.value = !!pb.authStore.model
-  user.value = pb.authStore.model
+  authState.isLoggedIn = !!pb.authStore.model
+  authState.user = pb.authStore.model
 }
 
-// Connexion utilisateur
+// Fonction de connexion
 export const login = async (email: string, password: string) => {
   try {
     const authData = await pb.collection('users').authWithPassword(email, password)
@@ -26,15 +29,14 @@ export const login = async (email: string, password: string) => {
   }
 }
 
-// Déconnexion utilisateur
+// Fonction de déconnexion
 export const logout = () => {
   pb.authStore.clear()
   refreshAuthState()
   router.push('/') // Redirige vers la page d'accueil après déconnexion
 }
 
-// Écouter les changements de l'état d'authentification (utile pour des redirections)
-watch(
-  () => pb.authStore.model,
-  () => refreshAuthState()
-)
+// Surveille les changements dans PocketBase authStore
+pb.authStore.onChange(() => {
+  refreshAuthState()
+})

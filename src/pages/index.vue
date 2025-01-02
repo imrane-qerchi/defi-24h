@@ -21,9 +21,11 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
       class="absolute top-0 left-0 w-full bg-white text-secondary text-center py-3 lg:py-5 font-bold text-xl lg:text-3xl transform rotate-3"
     >
       <div class="overflow-hidden whitespace-nowrap">
-        <p class="animate-marquee-10s">
+        <p class="animate-marquee-10s flex">
           Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie
-          ? ✨ Prêt Pour La Folie ?
+          ? ✨ Prêt Pour La Folie ? rêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La
+          Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt
+          Pour La Folie ? ✨ Prêt Pour La Folie ? ✨
         </p>
       </div>
     </div>
@@ -32,9 +34,11 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
       class="bg-secondary text-white text-center py-3 lg:py-5 font-bold text-xl lg:text-3xl transform -rotate-3 mt-10"
     >
       <div class="overflow-hidden whitespace-nowrap">
-        <p class="animate-marquee-10s">
+        <p class="animate-marquee-10s flex">
           Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie
-          ? ✨ Prêt Pour La Folie ?
+          ? ✨ Prêt Pour La Folie ? Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La
+          Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt Pour La Folie ? ✨ Prêt
+          Pour La Folie ? ✨ Prêt Pour La Folie ? ✨
         </p>
       </div>
     </div>
@@ -69,7 +73,8 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
         </p>
         <router-link
           to="/inscription"
-          class="bg-secondary text-white px-28 py-4 rounded-full text-xl lg:text-2xl font-normal hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary"
+          class="inline-block bg-secondary text-white px-28 py-4 rounded-full text-xl lg:text-2xl font-normal hover:opacity-90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary transition-transform duration-200"
+          style="display: inline-block"
         >
           Inscription
         </router-link>
@@ -94,14 +99,14 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
         class="flex flex-col lg:flex-row lg:justify-center lg:space-x-36 mt-8 space-y-4 lg:space-y-0"
       >
         <router-link
-          to="/creer-equipe"
-          class="bg-secondary text-white px-28 py-4 rounded-full text-xl lg:text-2xl font-normal hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 whitespace-nowrap text-center"
+          to="/creation-equipe"
+          class="bg-secondary text-white px-28 py-4 rounded-full text-xl lg:text-2xl font-normal hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 whitespace-nowrap flex items-center justify-center text-center transition-transform duration-200"
         >
           Créer mon équipe
         </router-link>
         <router-link
-          to="/integrer-equipe"
-          class="bg-secondary text-white px-28 py-4 rounded-full text-xl lg:text-2xl font-normal hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 whitespace-nowrap text-center"
+          to="/equipes"
+          class="bg-secondary text-white px-28 py-4 rounded-full text-xl lg:text-2xl font-normal hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 whitespace-nowrap flex items-center justify-center text-center transition-transform duration-200"
         >
           Intégrer une équipe
         </router-link>
@@ -109,18 +114,21 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
     </div>
 
     <!-- Partenaires -->
-    <div class="mt-24 text-center">
-      <h3 class="text-xl lg:text-5xl font-bold text-secondary mb-6">NOS PARTENAIRES</h3>
+    <div class="mt-36 text-center">
+      <h3 class="text-xl lg:text-5xl font-bold text-secondary mb-10">NOS PARTENAIRES</h3>
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 items-center">
-        <img src="#" alt="Maison des Étudiants de Montbéliard" class="mx-auto h-16" />
-        <img src="#" alt="CROUS" class="mx-auto h-16" />
-        <img src="#" alt="Littera" class="mx-auto h-16" />
-        <img src="#" alt="Université Marie et Louis Pasteur" class="mx-auto h-16" />
+        <img src="@/assets/crous.svg" alt="CROUS" class="mx-auto h-20" />
+        <img src="@/assets/LOGO_UMLP.png" alt="Littera" class="mx-auto h-20" />
+        <img src="@/assets/iut-nfc.svg" alt="iUT NFC" class="mx-auto h-20" />
+        <img
+          src="@/assets/littera_logo.png"
+          alt="Université Marie et Louis Pasteur"
+          class="mx-auto h-20"
+        />
       </div>
     </div>
 
-    <!-- Section Contact -->
-    <div class="mt-24 text-center">
+    <div class="mt-36 text-center">
       <h3 class="text-xl lg:text-6xl font-bold text-secondary mb-6">
         Une Question ? Besoin D’Infos ?
       </h3>
@@ -131,19 +139,30 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
         CONTACTEZ NOUS
       </h2>
 
-      <div class="flex flex-wrap items-center justify-center space-x-0 lg:space-x-4 mb-6">
-        <router-link
-          to="/contact"
-          class="bg-secondary text-white px-28 py-4 rounded-full text-xl lg:text-2xl font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 text-center w-full sm:w-auto"
-        >
-          Envoyer un message
-        </router-link>
+      <!-- Section en deux colonnes pour desktop et une colonne pour mobile -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 items-center justify-center lg:-space-x-48 mt-12">
+        <!-- Colonne gauche avec la flèche, cachée en mobile -->
+        <div class="hidden lg:flex justify-center">
+          <img src="@/assets/fleche.svg" alt="Flèche" class="w-96 h-16" />
+        </div>
+
+        <!-- Colonne droite avec le bouton -->
+        <div class="flex justify-center">
+          <router-link
+            to="/contact"
+            class="bg-secondary text-white px-28 py-4 rounded-full text-xl lg:text-2xl font-medium hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 w-full sm:w-auto transition-transform duration-200 whitespace-nowrap flex items-center justify-center text-center"
+          >
+            Envoyer un message
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+/* Animation infinie pour le texte */
+/* Animation infinie pour le texte */
 @keyframes marquee {
   0% {
     transform: translateX(0%);
@@ -153,18 +172,14 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
   }
 }
 
-@keyframes marquee-10s {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+.animate-marquee-10s {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 10s linear infinite;
 }
 
-.animate-marquee-10s {
-  display: inline-block;
-  white-space: nowrap;
-  animation: marquee-10s 15s linear infinite;
+.custom-hover:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
 }
 </style>

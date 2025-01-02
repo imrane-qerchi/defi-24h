@@ -83,11 +83,11 @@ const handleSubmit = (event: Event) => {
           ></textarea>
         </div>
 
-        <!-- Bouton Envoyer -->
+        <!-- Bouton Envoyer avec effet de hover -->
         <div class="flex justify-start">
           <button
             type="submit"
-            class="px-14 py-4 text-white bg-secondary rounded-full text-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary"
+            class="px-14 py-4 text-white bg-secondary rounded-full text-lg font-medium hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary transition-transform duration-200"
           >
             Envoyer
           </button>

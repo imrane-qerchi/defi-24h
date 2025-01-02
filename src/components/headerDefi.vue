@@ -1,38 +1,38 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { pb } from '@/backend'
+import { pb } from '@/backend' // Votre instance PocketBase
 import { useRouter } from 'vue-router/auto'
 
-// État pour gérer l'ouverture/fermeture du menu mobile
+// État réactif pour le menu mobile
 const isMenuOpen = ref(false)
 
-// Fonction pour basculer l'état du menu
+// État réactif pour la connexion
+const isLoggedIn = ref(!!pb.authStore.model)
+const user = ref(pb.authStore.model || null)
+
+const router = useRouter()
+
+// Basculer le menu mobile
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
   document.body.style.overflow = isMenuOpen.value ? 'hidden' : ''
 }
 
-// Fonction pour fermer le menu
+// Fermer le menu mobile
 const closeMenu = () => {
   isMenuOpen.value = false
   document.body.style.overflow = ''
 }
 
-// Vérification de l'état de connexion de l'utilisateur
-const isLoggedIn = ref(!!pb.authStore.model)
-const user = ref(pb.authStore.model) // Conserve l'utilisateur connecté
-
-const router = useRouter()
-
-// Fonction pour gérer la déconnexion
+// Fonction de déconnexion
 const logout = () => {
   pb.authStore.clear()
-  isLoggedIn.value = false // Met à jour l'état
+  isLoggedIn.value = false
   user.value = null
-  router.push('/') // Redirection vers la page d'accueil après déconnexion
+  router.push('/') // Redirige vers la page d'accueil après déconnexion
 }
 
-// Mettre à jour `isLoggedIn` automatiquement lors de changements
+// Mise à jour de l'état de connexion
 watch(
   () => pb.authStore.model,
   (newValue) => {
@@ -49,7 +49,7 @@ watch(
   <header
     class="sticky top-0 z-50 mx-auto flex items-center justify-between bg-[#1C1C1C] text-white px-6 py-4 rounded-full lg:space-x-4 lg:py-6 lg:px-10 max-w-[90%]"
   >
-    <!-- Logo avec espace ajouté à droite -->
+    <!-- Logo -->
     <div class="mr-8">
       <router-link to="/">
         <img src="/logo-defi24h.svg" alt="Défi 24H" class="h-14" />
@@ -107,10 +107,9 @@ watch(
       </router-link>
     </div>
 
-    <!-- Icône du menu mobile avec espace ajouté à gauche -->
+    <!-- Icône du menu mobile -->
     <div class="cursor-pointer lg:hidden ml-36" @click="toggleMenu">
       <svg
-        aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
@@ -127,7 +126,7 @@ watch(
     </div>
   </header>
 
-  <!-- Menu latéral mobile -->
+  <!-- Menu mobile -->
   <div
     v-if="isMenuOpen"
     class="fixed right-0 top-0 z-40 h-screen w-2/3 bg-[#1C1C1C] text-white transition-transform transform ease-in-out duration-300"
@@ -136,9 +135,8 @@ watch(
   >
     <div class="flex justify-end p-4">
       <!-- Icône de fermeture -->
-      <div class="cursor-pointer" @click="closeMenu">
+      <button @click="closeMenu">
         <svg
-          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -152,7 +150,7 @@ watch(
             d="M6 18L18 6M6 6l12 12"
           />
         </svg>
-      </div>
+      </button>
     </div>
     <nav id="mobile-menu" class="p-6">
       <ul class="flex flex-col space-y-6">

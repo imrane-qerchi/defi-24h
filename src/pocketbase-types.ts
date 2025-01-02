@@ -11,6 +11,7 @@ export enum Collections {
   Mfas = '_mfas',
   Otps = '_otps',
   Superusers = '_superusers',
+  Partners = 'partners',
   Subscribers = 'subscribers',
   Teams = 'teams',
   Users = 'users'
@@ -87,6 +88,13 @@ export type SuperusersRecord = {
   verified?: boolean
 }
 
+export type PartnersRecord = {
+  created?: IsoDateString
+  id: string
+  partenaire?: string
+  updated?: IsoDateString
+}
+
 export type SubscribersRecord = {
   created?: IsoDateString
   email?: string
@@ -129,6 +137,8 @@ export type MfasResponse<Texpand = unknown> = Required<MfasRecord> & BaseSystemF
 export type OtpsResponse<Texpand = unknown> = Required<OtpsRecord> & BaseSystemFields<Texpand>
 export type SuperusersResponse<Texpand = unknown> = Required<SuperusersRecord> &
   AuthSystemFields<Texpand>
+export type PartnersResponse<Texpand = unknown> = Required<PartnersRecord> &
+  BaseSystemFields<Texpand>
 export type SubscribersResponse<Texpand = unknown> = Required<SubscribersRecord> &
   BaseSystemFields<Texpand>
 export type TeamsResponse<Texpand = unknown> = Required<TeamsRecord> & BaseSystemFields<Texpand>
@@ -142,6 +152,7 @@ export type CollectionRecords = {
   _mfas: MfasRecord
   _otps: OtpsRecord
   _superusers: SuperusersRecord
+  partners: PartnersRecord
   subscribers: SubscribersRecord
   teams: TeamsRecord
   users: UsersRecord
@@ -153,6 +164,7 @@ export type CollectionResponses = {
   _mfas: MfasResponse
   _otps: OtpsResponse
   _superusers: SuperusersResponse
+  partners: PartnersResponse
   subscribers: SubscribersResponse
   teams: TeamsResponse
   users: UsersResponse
@@ -167,6 +179,7 @@ export type TypedPocketBase = PocketBase & {
   collection(idOrName: '_mfas'): RecordService<MfasResponse>
   collection(idOrName: '_otps'): RecordService<OtpsResponse>
   collection(idOrName: '_superusers'): RecordService<SuperusersResponse>
+  collection(idOrName: 'partners'): RecordService<PartnersResponse>
   collection(idOrName: 'subscribers'): RecordService<SubscribersResponse>
   collection(idOrName: 'teams'): RecordService<TeamsResponse>
   collection(idOrName: 'users'): RecordService<UsersResponse>

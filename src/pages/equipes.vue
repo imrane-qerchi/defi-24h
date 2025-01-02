@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -27,7 +28,7 @@ const teams = ref<
   }[]
 >([])
 
-// Vérifie si l'utilisateur est connecté
+// Vérifie si utilisateur est connecté
 const isLoggedIn = ref(false)
 
 const checkLoginStatus = () => {

@@ -59,14 +59,34 @@ async function registerUser() {
     errorMessage.value = error.message || 'Une erreur est survenue.'
   }
 }
+
+const goToLogin = () => {
+  router.push('/connexion') // Redirection vers la page connexion
+}
 </script>
 
 <template>
   <div class="mt-10 bg-primary flex flex-col items-center justify-center px-4 py-12">
     <!-- Titre principal -->
     <h1 class="text-3xl lg:text-5xl font-bold text-secondary mb-8">S’inscrire</h1>
-    <p class="text-sm lg:text-lg font-light text-black text-center mb-12">
+    <p class="text-sm lg:text-lg font-light text-black text-center">
       Rejoins l'aventure Défi 24h et constitue ton équipe !
+    </p>
+
+    <!-- Lien Weezevent -->
+    <div class="my-4 text-center">
+      <a
+        href="https://www.weezevent.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-secondary text-lg font-medium hover:underline"
+      >
+        Clique ici pour payer via Weezevent.
+      </a>
+    </div>
+
+    <p class="text-sm lg:text-lg font-semibold text-black text-center mb-12 italic">
+      N'oublie pas de payer les frais d'inscriptions sinon ton inscription ne sera pas effective.
     </p>
 
     <!-- Formulaire -->
@@ -95,7 +115,7 @@ async function registerUser() {
       <input
         v-model="formData.promotion"
         type="text"
-        placeholder="Entre ton année de promotion"
+        placeholder="Entre tes années de promotion (ex : 2023-2026)"
         class="w-full px-6 py-4 rounded-full bg-black text-[#7B7B83] placeholder-[#7B7B83] focus:outline-none focus:ring-2 focus:ring-secondary text-sm lg:text-lg font-light"
       />
       <div class="relative">
@@ -107,7 +127,7 @@ async function registerUser() {
         />
         <button
           type="button"
-          class="absolute top-3 right-4 text-white focus:outline-none"
+          class="absolute inset-y-0 right-4 flex items-center text-white focus:outline-none"
           @click="togglePasswordVisibility('password')"
         >
           👁️
@@ -122,7 +142,7 @@ async function registerUser() {
         />
         <button
           type="button"
-          class="absolute top-3 right-4 text-white focus:outline-none"
+          class="absolute inset-y-0 right-4 flex items-center text-white focus:outline-none"
           @click="togglePasswordVisibility('confirmPassword')"
         >
           👁️
@@ -134,13 +154,25 @@ async function registerUser() {
     <div v-if="errorMessage" class="text-red-500 mb-4 text-center">{{ errorMessage }}</div>
     <div v-if="successMessage" class="text-green-500 mb-4 text-center">{{ successMessage }}</div>
 
-    <!-- Bouton de soumission -->
-    <button
-      type="submit"
-      class="w-full max-w-xs py-3 px-6 text-white bg-secondary rounded-full text-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary"
-      @click="registerUser"
-    >
-      S’inscrire
-    </button>
+    <!-- Boutons de soumission et connexion -->
+    <div class="flex flex-col space-y-4 items-center mt-6">
+      <!-- Bouton pour s'inscrire -->
+      <button
+        type="submit"
+        class="w-full max-w-xs py-4 px-28 text-white bg-secondary rounded-full text-lg font-medium hover:opacity-90 hover:scale-105 transform transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-secondary whitespace-nowrap"
+        @click="registerUser"
+      >
+        S’inscrire
+      </button>
+
+      <!-- Bouton pour rediriger vers la connexion -->
+      <button
+        type="button"
+        class="w-full max-w-xs py-4 px-28 text-white bg-[#1C1C1C] rounded-full text-lg font-medium hover:opacity-90 hover:scale-105 transform transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-[#1C1C1C] whitespace-nowrap"
+        @click="goToLogin"
+      >
+        Se connecter
+      </button>
+    </div>
   </div>
 </template>
