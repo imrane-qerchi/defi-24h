@@ -26,8 +26,10 @@ async function loginUser() {
   try {
     await pb.collection('users').authWithPassword(formData.value.email, formData.value.password)
 
-    // Redirection après succès
-    router.push('/')
+    // Redirection après succès suivie d'un refresh de la page
+    router.push('/').then(() => {
+      window.location.reload()
+    })
   } catch (error: any) {
     errorMessage.value = error.message || 'Une erreur est survenue.'
   }
@@ -109,6 +111,7 @@ async function loginUser() {
         <button
           type="submit"
           class="w-full max-w-lg py-3 px-6 text-white bg-secondary rounded-full text-lg font-normal hover:opacity-90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary transition-transform duration-200"
+          @click="loginUser"
         >
           Se connecter
         </button>
