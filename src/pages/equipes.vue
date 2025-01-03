@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -8,106 +7,130 @@ import CardDefi from '@/components/cardDefi.vue'
 interface Member {
   prenom: string
   nom: string
-  avatar?: string | null // Peut être une chaîne ou null
+  avatar?: string | null
 }
 
 interface Team {
+  id: string
   nom: string
-  photo?: string | null // Peut être une chaîne ou null
+  photo?: string | null
+  membres?: string[]
   expand?: {
-    membres: Member[] // Liste des membres
+    membres: Member[]
   }
 }
 
 const router = useRouter()
 const teams = ref<
   {
+    id: string
     teamName: string
     imageSrc: string
     members: { name: string; avatar: string }[]
   }[]
 >([])
 
-// Vérifie si utilisateur est connecté
-const isLoggedIn = ref(false)
-
-const checkLoginStatus = () => {
-  isLoggedIn.value = !!pb.authStore.token // Vérifie si un token d'auth existe
-}
-
-// Fonction pour gérer la redirection au clic sur "Créer mon équipe"
-const handleCreateTeam = () => {
-  if (isLoggedIn.value) {
-    router.push('/creation-equipe') // Redirige vers la création d'équipe si connecté
-  } else {
-    router.push('/connexion') // Redirige vers la connexion si non connecté
-  }
-}
-
-// Données réactives pour le modal et l'équipe sélectionnée
+const isLoggedIn = ref(false) // Vérifie si utilisateur est connecté
 const isJoinModalOpen = ref(false) // Contrôle de l'ouverture du modal
 const selectedTeam = ref<string | null>(null) // ID de l'équipe sélectionnée
 
-// Fonction pour ouvrir le modal si l'utilisateur est connecté
-const handleJoinTeam = () => {
-  if (isLoggedIn.value) {
-    isJoinModalOpen.value = true // Ouvre le modal
-  } else {
-    alert('Veuillez vous connecter pour intégrer une équipe.')
-    router.push('/connexion') // Redirige vers la page de connexion
+// Vérifie si l'utilisateur est connecté
+const checkLoginStatus = () => {
+  isLoggedIn.value = !!pb.authStore.token
+}
+
+const userTeam = ref<string | null>(null) // Stocke l'équipe actuelle de l'utilisateur
+
+// Récupère les informations de l'utilisateur connecté
+const fetchUserTeam = async () => {
+  if (!isLoggedIn.value) return
+
+  try {
+    const userId = pb.authStore.model?.id
+    if (!userId) return
+
+    const user = await pb.collection('users').getOne(userId, {
+      expand: 'equipe'
+    })
+
+    userTeam.value = user.equipe || null // Met à jour l'équipe de l'utilisateur
+  } catch (error) {
+    console.error("Erreur lors de la récupération de l'équipe de l'utilisateur:", error)
   }
 }
 
-// Fonction pour intégrer l'équipe
+onMounted(() => {
+  checkLoginStatus()
+  fetchUserTeam() // Charge l'équipe de l'utilisateur
+  fetchTeams() // Charge les équipes disponibles
+})
+
+// Gère la redirection pour la création d'une équipe
+const handleCreateTeam = () => {
+  if (isLoggedIn.value) {
+    router.push('/creation-equipe')
+  } else {
+    router.push('/connexion')
+  }
+}
+
+// Ouvre le modal pour rejoindre une équipe si connecté
+const handleJoinTeam = () => {
+  if (isLoggedIn.value) {
+    isJoinModalOpen.value = true
+  } else {
+    alert('Veuillez vous connecter pour intégrer une équipe.')
+    router.push('/connexion')
+  }
+}
+
+// Fonction pour intégrer une équipe
 const joinTeam = async () => {
-  if (!selectedTeam.value) {
+  if (!selectedTeam.value || selectedTeam.value === '') {
     alert('Veuillez sélectionner une équipe.')
     return
   }
 
   try {
-    const userId = pb.authStore.model?.id // ID de l'utilisateur connecté
+    const userId = pb.authStore.model?.id
     if (!userId) {
       alert('Une erreur est survenue. Veuillez réessayer.')
       return
     }
 
-    // Récupère l'équipe sélectionnée
+    // Vérifie si l'équipe existe et récupère ses membres
     const team = await pb.collection('teams').getOne<Team>(selectedTeam.value)
 
-    // Ajoute l'utilisateur aux membres de l'équipe
-    const updatedMembers = team.expand?.membres
-      ? [...team.expand.membres.map((member) => member.id), userId]
-      : [userId]
-
+    const updatedMembers = team.membres ? [...team.membres, userId] : [userId]
     await pb.collection('teams').update(team.id, { membres: updatedMembers })
 
-    // Met à jour l'utilisateur pour inclure l'équipe
-    await pb.collection('users').update(userId, { equipe: team.id })
+    // Met à jour le champ `equipe` de l'utilisateur
+    await pb.collection('users').update(userId, { equipe: selectedTeam.value })
 
     alert("Vous avez rejoint l'équipe avec succès !")
-    isJoinModalOpen.value = false // Ferme le modal
-    fetchTeams() // Rafraîchit la liste des équipes
+    isJoinModalOpen.value = false
+    fetchTeams() // Rafraîchit les données des équipes
   } catch (error) {
     console.error("Erreur lors de l'intégration à l'équipe :", error)
     alert("Impossible d'intégrer l'équipe. Veuillez réessayer.")
   }
 }
 
-// Fonction pour récupérer les données des équipes depuis PocketBase
+// Fonction pour récupérer les données des équipes
 const fetchTeams = async () => {
   try {
     const response: Team[] = await pb.collection('teams').getFullList({
-      expand: 'membres' // Récupère les relations des membres
+      expand: 'membres'
     })
 
-    // Formate les données pour les adapter au composant CardDefi
+    // Formate les données pour les afficher correctement
     teams.value = response.map((team) => ({
+      id: team.id,
       teamName: team.nom,
-      imageSrc: team.photo ? pb.files.getUrl(team, team.photo) : '', // Fournit une chaîne vide si null
+      imageSrc: team.photo ? pb.files.getUrl(team, team.photo) : '',
       members: (team.expand?.membres || []).map((member) => ({
         name: `${member.prenom} ${member.nom}`,
-        avatar: member.avatar ? pb.files.getUrl(member, member.avatar) : '' // Fournit une chaîne vide si null
+        avatar: member.avatar ? pb.files.getUrl(member, member.avatar) : ''
       }))
     }))
   } catch (error) {
@@ -157,15 +180,14 @@ onMounted(() => {
           type="button"
           @click="handleCreateTeam"
           class="flex items-center justify-center bg-secondary text-white py-4 px-28 rounded-full text-2xl font-medium hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-transform duration-200"
-          style="white-space: nowrap"
         >
           Créer mon équipe
         </button>
         <button
+          v-if="!userTeam"
           type="button"
           @click="handleJoinTeam"
           class="flex items-center justify-center bg-secondary text-white py-4 px-28 rounded-full text-2xl font-medium hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-transform duration-200"
-          style="white-space: nowrap"
         >
           Intégrer une équipe
         </button>
@@ -179,7 +201,8 @@ onMounted(() => {
         <div class="bg-[#1C1C1C] text-white p-8 rounded-lg w-[500px]">
           <p class="text-center text-xl mb-6">Sélectionnez une équipe à rejoindre :</p>
           <select v-model="selectedTeam" class="w-full p-2 mb-6 bg-gray-800 text-white rounded">
-            <option v-for="team in teams" :key="team.teamName" :value="team.teamName">
+            <option disabled value="">-- Sélectionnez une équipe --</option>
+            <option v-for="team in teams" :key="team.id" :value="team.id">
               {{ team.teamName }}
             </option>
           </select>

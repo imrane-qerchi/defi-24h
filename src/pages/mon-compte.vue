@@ -129,14 +129,30 @@ const joinTeam = async () => {
 
 // Fonction pour quitter l'équipe
 const leaveTeam = async () => {
-  if (!user.value) return
+  if (!user.value || !user.value.expand?.equipe) {
+    console.error("Aucune équipe trouvée pour l'utilisateur.")
+    return
+  }
 
   try {
+    // Supprime l'utilisateur de l'équipe dans la collection `users`
     await pb.collection('users').update(user.value.id, { equipe: null })
+
+    // Récupère les informations de l'équipe
+    const team = await pb.collection('teams').getOne<TeamsResponse>(user.value.expand.equipe.id)
+
+    // Retire l'utilisateur du tableau `membres`
+    const updatedMembers = team.membres?.filter((memberId) => memberId !== user.value.id) || []
+    await pb.collection('teams').update(team.id, { membres: updatedMembers })
+
+    alert("Vous avez quitté l'équipe avec succès !")
     isLeaveModalOpen.value = false
+
+    // Rafraîchit les données utilisateur
     fetchUser()
   } catch (error) {
-    console.error("Erreur lors de la tentative de quitter l'équipe:", error)
+    console.error("Erreur lors de la tentative de quitter l'équipe :", error)
+    alert('Une erreur est survenue. Veuillez réessayer.')
   }
 }
 
