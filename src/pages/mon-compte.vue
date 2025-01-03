@@ -22,6 +22,9 @@ const isDissolveModalOpen = ref(false) // Modal de confirmation pour dissoudre l
 const isModalOpen = ref(false)
 const selectedFile = ref<File | null>(null)
 
+const newTeamName = ref('')
+const newTeamPhoto = ref<File | null>(null)
+
 // Gère l'upload de fichier
 const handleFileUpload = (event: Event) => {
   const target = event.target as HTMLInputElement
@@ -67,6 +70,7 @@ const fetchTeams = async () => {
   try {
     const response = await pb.collection('teams').getFullList()
     teams.value = response
+    console.log('Teams fetched:', teams.value)
   } catch (error) {
     console.error('Erreur lors de la récupération des équipes:', error)
   }
@@ -86,13 +90,37 @@ const updateUser = async (field: keyof UsersResponse, value: string) => {
 
 // Fonction pour rejoindre une équipe
 const joinTeam = async () => {
-  if (!selectedTeam.value) return
+  if (!selectedTeam.value) {
+    console.error('No team selected.')
+    return
+  }
+
+  const userId = pb.authStore.model?.id
+  if (!userId) {
+    console.error('No user ID found.')
+    return
+  }
 
   try {
-    const userId = pb.authStore.model?.id
-    await pb.collection('users').update(userId, { equipe: selectedTeam.value })
+    // Vérifiez si l'équipe existe
+    const team = await pb.collection('teams').getOne<TeamsResponse>(selectedTeam.value)
+    console.log('Team found:', team)
+
+    // Ajoutez l'utilisateur à l'équipe
+    const updatedMembers = team.membres ? [...team.membres, userId] : [userId]
+    await pb.collection('teams').update<TeamsResponse>(selectedTeam.value, {
+      membres: updatedMembers
+    })
+
+    // Mettez à jour le champ `equipe` de l'utilisateur
+    await pb.collection('users').update<UsersResponse>(userId, {
+      equipe: selectedTeam.value
+    })
+
     alert("Vous avez rejoint l'équipe avec succès !")
     isJoinModalOpen.value = false
+
+    // Rafraîchir les données utilisateur
     fetchUser()
   } catch (error) {
     console.error("Erreur lors de la tentative de rejoindre l'équipe:", error)
@@ -126,10 +154,44 @@ const dissolveTeam = async () => {
   }
 }
 
+// Gérer l'upload de fichier
+const handleFileChange = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  if (target && target.files) {
+    newTeamPhoto.value = target.files[0]
+  }
+}
+
+// Mettre à jour les informations de l'équipe
+const updateTeam = async () => {
+  if (!user.value?.expand?.equipe) return
+
+  try {
+    const formData = new FormData()
+    if (newTeamName.value) {
+      formData.append('nom', newTeamName.value)
+    }
+    if (newTeamPhoto.value) {
+      formData.append('photo', newTeamPhoto.value)
+    }
+
+    await pb.collection('teams').update(user.value.expand.equipe.id, formData)
+
+    alert("L'équipe a été mise à jour avec succès !")
+    isModalOpen.value = false
+    fetchUser() // Rafraîchir les données utilisateur
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour de l'équipe:", error)
+  }
+}
+
 onMounted(() => {
   fetchUser()
   fetchTeams()
 })
+
+console.log('Selected Team ID:', selectedTeam.value)
+console.log('Teams Loaded:', teams.value)
 </script>
 
 <template>
@@ -340,7 +402,7 @@ onMounted(() => {
       <button
         v-if="user?.expand?.equipe && user?.expand?.equipe?.chef === user?.id"
         class="bg-secondary text-white px-6 py-3 rounded-lg hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-transform duration-200"
-        @click="router.push(`/edit-equipe/${user.expand.equipe.id}`)"
+        @click="isModalOpen = true"
       >
         Modifier mon équipe
       </button>
@@ -362,6 +424,45 @@ onMounted(() => {
       </button>
     </div>
 
+    <!-- Modal de modification d'équipe -->
+    <div
+      v-if="isModalOpen"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+    >
+      <div class="bg-[#1C1C1C] text-white p-8 rounded-xl w-96">
+        <h2 class="text-2xl font-bold mb-6">Modifie ton équipe</h2>
+        <hr class="border-blue-500 mb-6" />
+        <form @submit.prevent="updateTeam" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-2">Nom de l'équipe</label>
+            <input
+              v-model="newTeamName"
+              type="text"
+              class="w-full bg-gray-700 text-white p-3 rounded-lg"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">Photo de l'équipe</label>
+            <input
+              type="file"
+              @change="handleFileChange"
+              class="w-full bg-gray-700 text-white p-3 rounded-lg"
+            />
+          </div>
+          <div class="flex justify-between">
+            <button
+              type="button"
+              class="bg-white text-black px-4 py-2 rounded-lg"
+              @click="isModalOpen = false"
+            >
+              Annuler
+            </button>
+            <button type="submit" class="bg-blue-500 px-4 py-2 rounded-lg">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- Modal confirmation rejoindre -->
     <div
       v-if="isJoinModalOpen"
@@ -369,9 +470,16 @@ onMounted(() => {
     >
       <div class="bg-[#1C1C1C] text-white p-8 rounded-lg w-[500px]">
         <p class="text-center text-xl mb-6">Sélectionnez une équipe à rejoindre :</p>
-        <select v-model="selectedTeam" class="w-full p-2 mb-6 bg-gray-800 text-white rounded">
-          <option v-for="team in teams" :key="team.id" :value="team.id">{{ team.nom }}</option>
+        <select
+          v-model="selectedTeam"
+          class="w-full p-2 mb-6 bg-gray-800 text-white rounded"
+          @change="() => console.log('Selected Team:', selectedTeam)"
+        >
+          <option v-for="team in teams" :key="team.id" :value="team.id">
+            {{ team.nom }}
+          </option>
         </select>
+
         <div class="flex justify-center space-x-8">
           <button
             class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
