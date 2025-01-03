@@ -44,6 +44,56 @@ const handleCreateTeam = () => {
   }
 }
 
+// Données réactives pour le modal et l'équipe sélectionnée
+const isJoinModalOpen = ref(false) // Contrôle de l'ouverture du modal
+const selectedTeam = ref<string | null>(null) // ID de l'équipe sélectionnée
+
+// Fonction pour ouvrir le modal si l'utilisateur est connecté
+const handleJoinTeam = () => {
+  if (isLoggedIn.value) {
+    isJoinModalOpen.value = true // Ouvre le modal
+  } else {
+    alert('Veuillez vous connecter pour intégrer une équipe.')
+    router.push('/connexion') // Redirige vers la page de connexion
+  }
+}
+
+// Fonction pour intégrer l'équipe
+const joinTeam = async () => {
+  if (!selectedTeam.value) {
+    alert('Veuillez sélectionner une équipe.')
+    return
+  }
+
+  try {
+    const userId = pb.authStore.model?.id // ID de l'utilisateur connecté
+    if (!userId) {
+      alert('Une erreur est survenue. Veuillez réessayer.')
+      return
+    }
+
+    // Récupère l'équipe sélectionnée
+    const team = await pb.collection('teams').getOne<Team>(selectedTeam.value)
+
+    // Ajoute l'utilisateur aux membres de l'équipe
+    const updatedMembers = team.expand?.membres
+      ? [...team.expand.membres.map((member) => member.id), userId]
+      : [userId]
+
+    await pb.collection('teams').update(team.id, { membres: updatedMembers })
+
+    // Met à jour l'utilisateur pour inclure l'équipe
+    await pb.collection('users').update(userId, { equipe: team.id })
+
+    alert("Vous avez rejoint l'équipe avec succès !")
+    isJoinModalOpen.value = false // Ferme le modal
+    fetchTeams() // Rafraîchit la liste des équipes
+  } catch (error) {
+    console.error("Erreur lors de l'intégration à l'équipe :", error)
+    alert("Impossible d'intégrer l'équipe. Veuillez réessayer.")
+  }
+}
+
 // Fonction pour récupérer les données des équipes depuis PocketBase
 const fetchTeams = async () => {
   try {
@@ -106,18 +156,48 @@ onMounted(() => {
         <button
           type="button"
           @click="handleCreateTeam"
-          class="flex items-center justify-center bg-secondary text-white py-4 px-28 rounded-full text-2xl font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          class="flex items-center justify-center bg-secondary text-white py-4 px-28 rounded-full text-2xl font-medium hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-transform duration-200"
           style="white-space: nowrap"
         >
           Créer mon équipe
         </button>
         <button
           type="button"
-          class="flex items-center justify-center bg-secondary text-white py-4 px-28 rounded-full text-2xl font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          @click="handleJoinTeam"
+          class="flex items-center justify-center bg-secondary text-white py-4 px-28 rounded-full text-2xl font-medium hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-transform duration-200"
           style="white-space: nowrap"
         >
           Intégrer une équipe
         </button>
+      </div>
+
+      <!-- Modal de sélection d'équipe -->
+      <div
+        v-if="isJoinModalOpen"
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      >
+        <div class="bg-[#1C1C1C] text-white p-8 rounded-lg w-[500px]">
+          <p class="text-center text-xl mb-6">Sélectionnez une équipe à rejoindre :</p>
+          <select v-model="selectedTeam" class="w-full p-2 mb-6 bg-gray-800 text-white rounded">
+            <option v-for="team in teams" :key="team.teamName" :value="team.teamName">
+              {{ team.teamName }}
+            </option>
+          </select>
+          <div class="flex justify-center space-x-8">
+            <button
+              class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              @click="joinTeam"
+            >
+              Rejoindre
+            </button>
+            <button
+              class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              @click="isJoinModalOpen = false"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Cards -->

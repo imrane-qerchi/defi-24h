@@ -47,7 +47,8 @@ watch(
 
   <!-- Header -->
   <header
-    class="relative mx-auto flex items-center justify-between bg-[#1C1C1C] text-white px-6 py-4 rounded-full lg:space-x-4 lg:py-6 lg:px-10 max-w-[90%]">
+    class="relative mx-auto flex items-center justify-between bg-[#1C1C1C] text-white px-6 py-4 rounded-full lg:space-x-4 lg:py-6 lg:px-10 max-w-[90%]"
+  >
     <!-- Logo -->
     <div class="mr-8">
       <router-link to="/">
