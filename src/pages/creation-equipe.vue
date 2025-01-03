@@ -23,37 +23,44 @@ function handleFileUpload(event: Event) {
 // Fonction pour créer l'équipe
 async function createTeam() {
   if (!teamName.value || !teamPhoto.value) {
-    errorMessage.value = 'Veuillez remplir tous les champs.'
-    return
+    errorMessage.value = 'Veuillez remplir tous les champs.';
+    return;
   }
 
   try {
-    // Récupération de l'utilisateur courant
-    const currentUser = pb.authStore.model
+    const currentUser = pb.authStore.model; // Récupère l'utilisateur courant
     if (!currentUser) {
-      throw new Error('Utilisateur non authentifié.')
+      throw new Error('Utilisateur non authentifié.');
     }
 
-    // Création de l'équipe dans PocketBase
-    const formData = new FormData()
-    formData.append('nom', teamName.value)
-    formData.append('photo', teamPhoto.value)
-    formData.append('chef', currentUser.id) // L'utilisateur devient chef
-    formData.append('membres', JSON.stringify([currentUser.id])) // L'utilisateur devient membre
+    // Préparation des données à envoyer
+    const formData = new FormData();
+    formData.append('nom', teamName.value); // Nom de l'équipe
+    formData.append('photo', teamPhoto.value); // Photo de l'équipe
+    formData.append('chef', currentUser.id); // L'utilisateur devient le chef de l'équipe
+    formData.append('membres', JSON.stringify([currentUser.id])); // L'utilisateur devient membre
 
-    const team = await pb.collection('teams').create(formData)
+    console.log('Données envoyées :');
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
 
-    // Mise à jour de l'utilisateur pour associer l'équipe créée
-    await pb.collection('users').update(currentUser.id, { equipe: team.id })
+    // Création de l'équipe
+    const team = await pb.collection('teams').create(formData);
 
-    successMessage.value = true
+    // Mise à jour de l'utilisateur
+    await pb.collection('users').update(currentUser.id, { equipe: team.id });
+
+    successMessage.value = true;
     setTimeout(() => {
-      router.push('/mon-compte')
-    }, 4000)
+      router.push('/mon-compte');
+    }, 4000);
   } catch (error: any) {
-    errorMessage.value = error.message || "Une erreur est survenue lors de la création de l'équipe."
+    console.error('Erreur lors de la création de l\'équipe :', error);
+    errorMessage.value = error.message || 'Une erreur est survenue lors de la création de l\'équipe.';
   }
 }
+
 </script>
 
 <template>
