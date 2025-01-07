@@ -1,8 +1,8 @@
-import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
-import VueRouter from 'unplugin-vue-router/vite'
+import { fileURLToPath, URL } from 'node:url';
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueDevTools from 'vite-plugin-vue-devtools';
+import VueRouter from 'unplugin-vue-router/vite';
 
 export default defineConfig({
   plugins: [
@@ -11,14 +11,14 @@ export default defineConfig({
     }),
     // ⚠️ Vue must be placed after VueRouter()
     vue(),
-    vueDevTools()
+    vueDevTools(),
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
   },
   // build: {
   //   outDir: './pocketbase/pb_public'
   // }
-})
+});
