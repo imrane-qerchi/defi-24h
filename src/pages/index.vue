@@ -4,18 +4,34 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
 </script>
 
 <template>
-  <!-- En-tête de la page -->
-  <div class="flex-1 lg:pl-20 flex flex-col items-start pb-10 px-6 lg:mt-20">
-    <div class="mt-12 mb-10 lg:mb-8 order-1 lg:order-2">
-      <h1 class="text-4xl lg:text-7xl font-bold text-secondary">Le Défi 24h</h1>
-      <h2 class="text-4xl lg:text-7xl font-bold text-secondary">C'est bientôt !</h2>
-      <p class="text-2xl lg:text-3xl font-bold mt-4">17 Janvier 2025</p>
+  <div class="flex-1 lg:pl-20 flex flex-col items-start pb-10 px-6 lg:mt-20 relative">
+    <!-- Conteneur principal pour les titres -->
+    <div
+      class="mt-12 mb-10 lg:mb-8 order-1 lg:order-2 lg:grid lg:grid-cols-1 lg:gap-10 lg:items-start"
+    >
+      <!-- Titres -->
+      <div>
+        <h1 class="text-4xl lg:text-7xl font-bold text-secondary">Le Défi 24h</h1>
+        <h2 class="text-4xl lg:text-7xl font-bold text-secondary">C'est bientôt !</h2>
+
+        <!-- Paragraphe sous les titres en mobile -->
+        <p class="text-2xl lg:text-3xl font-bold mt-4 lg:hidden">17 Janvier 2025</p>
+      </div>
     </div>
+
+    <!-- Paragraphe positionné en bas à droite pour desktop -->
+    <p
+      class="hidden lg:block text-4xl lg:text-7xl font-bold text-secondary absolute bottom-10 right-10"
+    >
+      17 Janvier 2025
+    </p>
+
+    <!-- Timer -->
     <CountdownTimer class="order-2 lg:order-1 mb-10 lg:mb-0 w-full max-w-screen-lg mx-auto" />
   </div>
 
   <!-- Bandeaux superposés dans une même div -->
-  <div class="relative">
+  <div class="relative lg:mt-20">
     <!-- Bandeau arrière-plan (blanc, défilant, avec rotation légère) -->
     <div
       class="absolute top-0 left-0 w-full bg-white text-secondary text-center py-3 lg:py-5 font-bold text-xl lg:text-3xl transform rotate-3"

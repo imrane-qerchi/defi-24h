@@ -24,40 +24,39 @@ const selectedFile = ref<File | null>(null)
 
 const newTeamName = ref('')
 const newTeamPhoto = ref<File | null>(null)
-7// Ajoute une référence pour le mot de passe visible/invisible
-const isPasswordVisible = ref(false);
+7 // Ajoute une référence pour le mot de passe visible/invisible
+const isPasswordVisible = ref(false)
 
 // Gère l'affichage du mot de passe
 const togglePasswordVisibility = () => {
-  isPasswordVisible.value = !isPasswordVisible.value;
-};
+  isPasswordVisible.value = !isPasswordVisible.value
+}
 
 // Gère la mise à jour du mot de passe
 const updatePassword = async (newPassword: string) => {
-  if (!user.value) return;
+  if (!user.value) return
 
   try {
-    await pb.collection('users').update(user.value.id, { password: newPassword });
-    alert('Mot de passe mis à jour avec succès.');
+    await pb.collection('users').update(user.value.id, { password: newPassword })
+    alert('Mot de passe mis à jour avec succès.')
   } catch (error) {
-    console.error("Erreur lors de la mise à jour du mot de passe :", error);
-    alert('Une erreur est survenue lors de la mise à jour du mot de passe.');
+    console.error('Erreur lors de la mise à jour du mot de passe :', error)
+    alert('Une erreur est survenue lors de la mise à jour du mot de passe.')
   }
-};
+}
 
 // Gère la mise à jour de l'année de promotion
 const updatePromotionYear = async (newYear: string) => {
-  if (!user.value) return;
+  if (!user.value) return
 
   try {
-    await pb.collection('users').update(user.value.id, { promotion: newYear });
-    alert("Année de promotion mise à jour avec succès.");
+    await pb.collection('users').update(user.value.id, { promotion: newYear })
+    alert('Année de promotion mise à jour avec succès.')
   } catch (error) {
-    console.error("Erreur lors de la mise à jour de l'année de promotion :", error);
-    alert("Une erreur est survenue lors de la mise à jour de l'année de promotion.");
+    console.error("Erreur lors de la mise à jour de l'année de promotion :", error)
+    alert("Une erreur est survenue lors de la mise à jour de l'année de promotion.")
   }
-};
-
+}
 
 // Gère l'upload de fichier
 const handleFileUpload = (event: Event) => {
@@ -370,43 +369,40 @@ console.log('Teams Loaded:', teams.value)
         </div>
 
         <!-- Année de promotion -->
-<div>
-  <label class="block text-sm font-medium mb-2">Année de promotion</label>
-  <div class="relative">
-    <input
-      type="text"
-      :disabled="!editableFields.promotion"
-      :value="user?.promotion"
-      @blur="(e) => updatePromotionYear(e.target.value)"
-      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary disabled:bg-gray-100 disabled:cursor-not-allowed"
-    />
-    <button
-      class="absolute right-2 top-2 text-gray-500"
-      @click="editableFields.promotion = true"
-    >
-      ✎
-    </button>
-  </div>
-</div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Année de promotion</label>
+          <div class="relative">
+            <input
+              type="text"
+              :disabled="!editableFields.promotion"
+              :value="user?.promotion"
+              @blur="(e) => updatePromotionYear(e.target.value)"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary disabled:bg-gray-100 disabled:cursor-not-allowed"
+            />
+            <button
+              class="absolute right-2 top-2 text-gray-500"
+              @click="editableFields.promotion = true"
+            >
+              ✎
+            </button>
+          </div>
+        </div>
 
         <!-- Mot de passe -->
-<div>
-  <label class="block text-sm font-medium mb-2">Mot de passe</label>
-  <div class="relative">
-    <input
-      :type="isPasswordVisible ? 'text' : 'password'"
-      placeholder="Entrez un nouveau mot de passe"
-      @blur="(e) => updatePassword(e.target.value)"
-      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
-    />
-    <button
-      class="absolute right-2 top-2 text-gray-500"
-      @click="togglePasswordVisibility"
-    >
-      ✎
-    </button>
-  </div>
-</div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Mot de passe</label>
+          <div class="relative">
+            <input
+              :type="isPasswordVisible ? 'text' : 'password'"
+              placeholder="Entrez un nouveau mot de passe"
+              @blur="(e) => updatePassword(e.target.value)"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
+            />
+            <button class="absolute right-2 top-2 text-gray-500" @click="togglePasswordVisibility">
+              ✎
+            </button>
+          </div>
+        </div>
 
         <div>
           <label class="block text-sm font-medium mb-2">Équipe</label>

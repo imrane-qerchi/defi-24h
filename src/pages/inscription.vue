@@ -76,7 +76,7 @@ const goToLogin = () => {
     <!-- Lien Weezevent -->
     <div class="my-4 text-center">
       <a
-        href="https://www.weezevent.com/"
+        href="https://my.weezevent.com/le-defi-24h-2025"
         target="_blank"
         rel="noopener noreferrer"
         class="text-secondary text-lg font-medium hover:underline"

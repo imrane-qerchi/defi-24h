@@ -23,44 +23,43 @@ function handleFileUpload(event: Event) {
 // Fonction pour créer l'équipe
 async function createTeam() {
   if (!teamName.value || !teamPhoto.value) {
-    errorMessage.value = 'Veuillez remplir tous les champs.';
-    return;
+    errorMessage.value = 'Veuillez remplir tous les champs.'
+    return
   }
 
   try {
-    const currentUser = pb.authStore.model; // Récupère l'utilisateur courant
+    const currentUser = pb.authStore.model // Récupère l'utilisateur courant
     if (!currentUser) {
-      throw new Error('Utilisateur non authentifié.');
+      throw new Error('Utilisateur non authentifié.')
     }
 
     // Préparation des données à envoyer
-    const formData = new FormData();
-    formData.append('nom', teamName.value); // Nom de l'équipe
-    formData.append('photo', teamPhoto.value); // Photo de l'équipe
-    formData.append('chef', currentUser.id); // L'utilisateur devient le chef de l'équipe
-    formData.append('membres', JSON.stringify([currentUser.id])); // L'utilisateur devient membre
+    const formData = new FormData()
+    formData.append('nom', teamName.value) // Nom de l'équipe
+    formData.append('photo', teamPhoto.value) // Photo de l'équipe
+    formData.append('chef', currentUser.id) // L'utilisateur devient le chef de l'équipe
+    formData.append('membres', JSON.stringify([currentUser.id])) // L'utilisateur devient membre
 
-    console.log('Données envoyées :');
+    console.log('Données envoyées :')
     formData.forEach((value, key) => {
-      console.log(`${key}:`, value);
-    });
+      console.log(`${key}:`, value)
+    })
 
     // Création de l'équipe
-    const team = await pb.collection('teams').create(formData);
+    const team = await pb.collection('teams').create(formData)
 
     // Mise à jour de l'utilisateur
-    await pb.collection('users').update(currentUser.id, { equipe: team.id });
+    await pb.collection('users').update(currentUser.id, { equipe: team.id })
 
-    successMessage.value = true;
+    successMessage.value = true
     setTimeout(() => {
-      router.push('/mon-compte');
-    }, 4000);
+      router.push('/mon-compte')
+    }, 4000)
   } catch (error: any) {
-    console.error('Erreur lors de la création de l\'équipe :', error);
-    errorMessage.value = error.message || 'Une erreur est survenue lors de la création de l\'équipe.';
+    console.error("Erreur lors de la création de l'équipe :", error)
+    errorMessage.value = error.message || "Une erreur est survenue lors de la création de l'équipe."
   }
 }
-
 </script>
 
 <template>
