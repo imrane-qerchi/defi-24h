@@ -18,6 +18,11 @@ const editableFields = ref<Record<string, boolean>>({
 const isJoinModalOpen = ref(false) // Modal pour rejoindre une équipe
 const isLeaveModalOpen = ref(false) // Modal de confirmation pour quitter l'équipe
 const isDissolveModalOpen = ref(false) // Modal de confirmation pour dissoudre l'équipe
+const isProfilePhotoModalOpen = ref(false) // Modal spécifique à la photo de profil
+
+const openProfilePhotoModal = () => {
+  isProfilePhotoModalOpen.value = true
+}
 
 const isModalOpen = ref(false)
 const selectedFile = ref<File | null>(null)
@@ -278,7 +283,7 @@ console.log('Teams Loaded:', teams.value)
           <div
             class="absolute -bottom-2 -right-2 text-gray-500 text-2xl cursor-pointer"
             title="Modifier la photo"
-            @click="isModalOpen = true"
+            @click="openProfilePhotoModal"
           >
             ✎
           </div>
@@ -473,6 +478,25 @@ console.log('Teams Loaded:', teams.value)
       >
         Dissoudre l'équipe
       </button>
+    </div>
+
+    <!-- Modal de modification de la photo de profil -->
+    <div
+      v-if="isProfilePhotoModalOpen"
+      class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center"
+    >
+      <div class="bg-white p-6 rounded-lg w-96">
+        <h2 class="text-xl font-bold mb-4">Modifier la photo de profil</h2>
+        <input type="file" accept="image/*" @change="handleFileUpload" />
+        <div class="mt-4 flex justify-end space-x-4">
+          <button class="px-4 py-2 bg-gray-300 rounded" @click="isProfilePhotoModalOpen = false">
+            Annuler
+          </button>
+          <button class="px-4 py-2 bg-secondary text-white rounded" @click="updatePhoto">
+            Valider
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Modal de modification d'équipe -->
