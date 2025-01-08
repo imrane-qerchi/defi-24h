@@ -81,10 +81,15 @@ const updatePhoto = async () => {
 
     const updatedUser = await pb.collection('users').update(user.value.id, formData)
 
-    user.value = updatedUser
-    isModalOpen.value = false // Ferme le modal
+    user.value = updatedUser // Met à jour l'utilisateur localement
+    isProfilePhotoModalOpen.value = false // Ferme le modal
+
+    // Recharge la page pour refléter la nouvelle photo de profil
+    await fetchUser()
+    alert('Photo de profil mise à jour avec succès !')
   } catch (error) {
     console.error('Erreur lors de la mise à jour de la photo :', error)
+    alert('Une erreur est survenue lors de la mise à jour de la photo.')
   }
 }
 
