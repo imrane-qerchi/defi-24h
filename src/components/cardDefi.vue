@@ -17,6 +17,11 @@ defineProps({
 // État pour contrôler l'affichage de la modal
 import { ref } from 'vue';
 const isModalOpen = ref(false);
+
+// Fonction pour fermer la modal
+const closeModal = () => {
+  isModalOpen.value = false;
+};
 </script>
 
 <template>
@@ -50,11 +55,12 @@ const isModalOpen = ref(false);
   <div
     v-if="isModalOpen"
     class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50"
+    @click.self="closeModal"
   >
     <div class="relative bg-white rounded-lg shadow-lg max-w-3xl">
       <button
         class="absolute top-2 right-2 text-2xl font-bold text-gray-700 hover:text-gray-900"
-        @click="isModalOpen = false"
+        @click="closeModal"
       >
         &times;
       </button>
