@@ -17,7 +17,7 @@ defineProps({
 
 <template>
   <div
-    class="card-defi flex flex-col items-center bg-secondary text-white rounded-3xl p-6 shadow-lg w-80"
+    class="card-defi flex flex-col items-center bg-secondary text-white rounded-3xl p-6 shadow-lg w-80 transform transition-transform duration-300 hover:scale-105"
   >
     <!-- Image principale -->
     <div class="w-full h-40 overflow-hidden rounded-xl mb-4">
