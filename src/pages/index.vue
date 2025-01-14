@@ -133,7 +133,7 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
     <div class="mt-36 text-center">
       <h3 class="text-xl lg:text-5xl font-bold text-secondary mb-10">NOS PARTENAIRES</h3>
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 items-center">
-        <img src="@/assets/crous.svg" alt="CROUS" class="mx-auto h-20" />
+        <img src="@/assets/pma.svg" alt="PMA" class="mx-auto h-20" />
         <img src="@/assets/LOGO_UMLP.png" alt="Littera" class="mx-auto h-20" />
         <img src="@/assets/iut-nfc.svg" alt="iUT NFC" class="mx-auto h-20" />
         <img
